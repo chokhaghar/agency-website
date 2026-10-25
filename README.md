@@ -2,7 +2,7 @@
 
 ## Roz ka kaam — Admin Panel se (coding nahi)
 **Apne PC par:** `Start Website.bat` par double-click karo. Browser mein admin panel khul jayega (`http://localhost:5500/admin.html`).
-**GitHub par live hone ke baad:** `https://<username>.github.io/<repo>/admin.html` kholo, mobile se bhi chalega (ek baar token daalna hoga, Connection page dekho).
+**Online (mobile / kisi bhi device se):** `https://chokhaghar.github.io/agency-website/admin.html` → **username + password** se login. Pehli baar wahi page *setup* maangta hai: apna username, password aur ek GitHub token (steps page par likhe hain). Token aapke password se AES-256 encrypt hokar `admin/vault.json` mein save hota hai — bina sahi password koi admin nahi khol sakta, na website badal sakta. Password badalna: Admin → 🔐 Account / Login.
 
 Admin panel mein ye sab badal sakte ho:
 | Section | Kya badlega |
