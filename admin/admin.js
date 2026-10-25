@@ -37,6 +37,24 @@
         { k: "poster", label: "Poster / thumbnail", type: "image", full: true },
         { k: "preview", label: "Short preview loop (optional — khaali ho to full video chalega)", type: "video", full: true }
       ] },
+    { key: "coupons", label: "Offers & Coupons", icon: "🎁", kind: "list", desc: "Festive offer popup aur coupon codes. Offer ka naam likho (Diwali / Navratri / Holi / kuch bhi) — design apne aap us theme ka ban jayega. OFF karne ya last date nikalne par code website par kaam nahi karega.",
+      title: i => `${i.name || "Offer"} — ${i.code || i._plain || i.hint || "?"}`, sub: i => couponStatus(i),
+      tpl: () => { const c = "NEW" + Math.floor(Math.random() * 900 + 100); return { name: "New Offer", hash: window.OfferKit.hashCode(c), hint: window.OfferKit.hintOf(c), _plain: c, code: "", type: "percent", value: 10, active: true, expires: "", popup: false, headline: "", subtext: "", theme: "auto", color: "", emoji: "" }; },
+      fields: [
+        { k: "name", label: "Offer naam — theme isi se banegi", hint: "Diwali Offer / Navratri Offer / Holi Sale / New Year…", full: true },
+        { k: "code", label: "Coupon code (secret)", type: "secretcode", full: true },
+        { k: "type", label: "Discount type", type: "select", options: [["percent", "% percent"], ["flat", "₹ flat amount"]] },
+        { k: "value", label: "Discount (kitna)", type: "number", hint: "20 = 20% ya ₹20" },
+        { k: "expires", label: "Last date (iske baad expire)", type: "date", hint: "khaali = kabhi expire nahi" },
+        { k: "active", label: "Offer / code ON hai", type: "check" },
+        { k: "popup", label: "Website par popup dikhao (sirf list ka pehla ON popup dikhega)", type: "check" },
+        { k: "headline", label: "Headline", hint: "khaali chhodo to theme ki apni line aayegi", full: true },
+        { k: "subtext", label: "Chhoti line (optional)", full: true },
+        { k: "theme", label: "Theme", type: "select", options: () => [["auto", "Auto — offer naam se"], ...Object.entries(window.OfferKit?.THEMES || {}).map(([k, v]) => [k, v.label])] },
+        { k: "color", label: "Apna colour (optional)", type: "color" },
+        { k: "emoji", label: "Apne emojis (optional)", hint: "🪔✨🎆", full: true },
+        { k: "_preview", label: "Live preview (website par aisa dikhega)", type: "offerPreview", full: true }
+      ] },
     { key: "addons", label: "Add-ons", icon: "➕", kind: "list", desc: "Extra services jo kisi bhi style ke saath le sakte hain.", title: "name", sub: i => rupee(i.price),
       tpl: () => ({ name: "New add-on", price: 499 }),
       fields: [{ k: "name", label: "Naam" }, { k: "price", label: "Rate (₹)", type: "number", price: true }] },
@@ -67,10 +85,7 @@
         { k: "beforePoster", label: "Before poster", type: "image" }, { k: "afterPoster", label: "After poster", type: "image" },
         { k: "changes", label: "Kya badla (har line ek point)", type: "lines", full: true }
       ] },
-    { key: "heroShowreel", label: "Mobile Showreel (top)", icon: "🎞", kind: "obj", desc: "Mobile par pehli screen ke peeche poora chalne wala video. Best: raw → edited wipe wala 10–20 sec ka vertical reel.", fields: [
-      { k: "video", label: "Showreel video", type: "video", full: true, posterKey: "poster" },
-      { k: "poster", label: "Poster", type: "image", full: true }] },
-    { key: "heroPhones", label: "Hero Reels (top)", icon: "📱", kind: "list", max: 3, desc: "Sabse upar 3 phones mein chalne wale videos (beech wala = 2nd). Chhote 5–6 sec loops best hain.", title: "tag", sub: () => "", thumb: "poster",
+    { key: "heroPhones", label: "Hero Reels (top)", icon: "📱", kind: "list", max: 3, desc: "Sabse upar 3 phones mein chalne wale videos — PC aur mobile dono par. Beech wala (2nd) sabse bada dikhta hai: wahan raw → edited showreel best hai.", title: "tag", sub: () => "", thumb: "poster",
       tpl: () => ({ tag: "New", video: "", poster: "" }),
       fields: [{ k: "tag", label: "Phone ke neeche label", full: true }, { k: "video", label: "Video", type: "video", full: true, posterKey: "poster" }, { k: "poster", label: "Poster", type: "image", full: true }] },
     { key: "brands", label: "Brands (moving line)", icon: "🏢", kind: "list", desc: "Jin brands ke liye kaam kiya — website par chalti line mein dikhenge. Logo na ho to initials dikhenge.", title: "name", sub: i => i.sub, thumb: "logo",
@@ -91,6 +106,12 @@
     { key: "seo", label: "Google / SEO", icon: "🔍", kind: "obj", desc: "Google search mein dikhne wala title aur description.", fields: [
       { k: "title", label: "Page title", full: true }, { k: "description", label: "Description (150 characters tak)", type: "textarea", full: true }] }
   ];
+  function couponStatus(i) {
+    const exp = i.expires && new Date(i.expires + "T23:59:59") < new Date();
+    const st = exp ? "⏰ EXPIRED" : i.active ? "🟢 ON" : "⚪ OFF";
+    const off = window.OfferKit ? window.OfferKit.offText(i) : i.value;
+    return `${st} · ${off}${i.popup ? " · popup" : ""}${i.expires ? " · till " + i.expires : ""}`;
+  }
   const TEXT_GROUPS = { nav: "Menu", hero: "Hero (sabse upar)", brands: "Brands line", ba: "Before / After", styles: "Edit styles", addons: "Add-ons", work: "Our work", process: "How it works", why: "Why us", packages: "Packages", testimonials: "Reviews", faq: "FAQ", contact: "Contact", order: "Order form", wa: "WhatsApp button", footer: "Footer" };
   const TEXT_HINTS = { "hero.rotator": "comma se alag karo — ye words ghoomte rahenge", "wa.default": "floating WhatsApp button dabane par jaane wala message" };
 
@@ -240,7 +261,7 @@
     }
     html += `</div></div>`;
     if (s.key === "services") html += `<div class="hint">💡 Rate rule: sabse zyada kaam (3D tracking, roto) sabse mehenga → sirf captions sabse sasta. Upar wala card website par pehle dikhega — ↑ ↓ se order badlo.</div>`;
-    if (["portfolio", "heroPhones", "services", "heroShowreel"].includes(s.key)) html += `<div class="hint">🎞 Bade videos (25 MB+) website slow karte hain. Pehle <b>tools\\Video-Chhota-Karo.bat</b> par video drag karo, phir uski <b>_web.mp4</b> file yahan upload karo.</div>`;
+    if (["portfolio", "heroPhones", "services"].includes(s.key)) html += `<div class="hint">🎞 Bade videos (25 MB+) website slow karte hain. Pehle <b>tools\\Video-Chhota-Karo.bat</b> par video drag karo, phir uski <b>_web.mp4</b> file yahan upload karo.</div>`;
     m.innerHTML = html + `<div id="ed"></div>`;
     const ed = $("#ed");
     if (s.kind === "obj") { const c = el(`<div class="card solo"><div class="grid"></div></div>`); fields(s.fields, data[s.key], $(".grid", c)); ed.append(c); }
@@ -311,17 +332,49 @@
   function el(html) { const d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
   function fields(defs, obj, grid, onChange = () => {}) {
     grid.innerHTML = "";
-    const changed = () => { markDirty(); onChange(); };
+    const live = [];
+    let lt = 0;
+    const changed = () => { markDirty(); onChange(); clearTimeout(lt); lt = setTimeout(() => live.forEach(f => f()), 150); };
     defs.forEach(d => {
       const type = d.type || "text";
       const lab = `<span>${esc(d.label)}${d.hint ? ` <em>— ${esc(d.hint)}</em>` : ""}</span>`;
       let f;
       if (type === "image" || type === "video") { f = mediaField(d, obj, changed, () => fields(defs, obj, grid, onChange)); }
+      else if (type === "secretcode") {
+        const known = obj.code || obj._plain || "";
+        f = el(`<label class="f f--full">${lab}<input type="text" autocapitalize="characters" spellcheck="false" autocomplete="off" style="text-transform:uppercase;letter-spacing:.08em;font-weight:700"><small class="media__note"></small></label>`);
+        const i = $("input", f), note = $("small", f);
+        i.value = known;
+        i.placeholder = obj.hint ? `Secret code (${obj.hint}) — badalne ke liye naya code likho` : "jaise DIWALI20";
+        const say = () => note.textContent = obj.popup
+          ? "Popup ON hai — ye code popup mein sabko dikhega (copy button ke saath)."
+          : `🔒 Secret — website ki file mein sirf iska fingerprint (hash) save hota hai, code kisi ko nahi dikhta.${obj.hint ? " Abhi: " + obj.hint : ""}`;
+        say(); live.push(say);
+        i.addEventListener("input", () => {
+          const v = window.OfferKit.norm(i.value); i.value = v;
+          if (v) { obj._plain = v; obj.hash = window.OfferKit.hashCode(v); obj.hint = window.OfferKit.hintOf(v); if (obj.popup) obj.code = v; }
+          changed();
+        });
+      }
+      else if (type === "offerPreview") {
+        f = el(`<div class="f f--full">${lab}<div class="opv"></div><small class="media__note opv__t"></small></div>`);
+        const box = $(".opv", f), note = $(".opv__t", f);
+        const draw = () => { if (!window.OfferKit) { box.textContent = "Preview load nahi hua"; return; } const th = window.OfferKit.preview(box, obj); note.textContent = "Theme: " + th.label + (obj.theme === "auto" || !obj.theme ? " (naam se apne aap)" : ""); };
+        draw(); live.push(draw);
+      } else if (type === "color") {
+        f = el(`<label class="f ${d.full ? "f--full" : ""}">${lab}<div class="price-row"><input type="color"><input type="text" placeholder="theme ka colour" spellcheck="false"><button type="button" class="b b--xs b--ghost">Reset</button></div></label>`);
+        const [pick, txt] = $$("input", f), rs = $("button", f);
+        const sync = v => { txt.value = v || ""; if (/^#[0-9a-f]{6}$/i.test(v || "")) pick.value = v; };
+        sync(obj[d.k]);
+        pick.addEventListener("input", () => { obj[d.k] = pick.value; sync(pick.value); changed(); });
+        txt.addEventListener("input", () => { obj[d.k] = txt.value.trim(); changed(); });
+        rs.addEventListener("click", () => { obj[d.k] = ""; sync(""); changed(); });
+      }
       else if (type === "check") {
         f = el(`<label class="f f--check ${d.full ? "f--full" : ""}"><input type="checkbox">${lab}</label>`);
-        const i = $("input", f); i.checked = !!obj[d.k]; i.addEventListener("change", () => { obj[d.k] = i.checked; changed(); });
+        const i = $("input", f); i.checked = !!obj[d.k]; i.addEventListener("change", () => { obj[d.k] = i.checked; if (d.k === "popup") { if (i.checked) obj.code = obj.code || obj._plain || ""; else obj.code = ""; } changed(); });
       } else if (type === "select" || type === "style") {
-        const opts = type === "style" ? [["", "— koi nahi —"], ...data.services.map(s => [s.id, `${s.name} (${rupee(s.price)})`])] : d.options;
+        const opts = type === "style" ? [["", "— koi nahi —"], ...data.services.map(s => [s.id, `${s.name} (${rupee(s.price)})`])] : typeof d.options === "function" ? d.options() : d.options;
         f = el(`<label class="f ${d.full ? "f--full" : ""}">${lab}<select>${opts.map(([v, t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join("")}</select></label>`);
         const i = $("select", f); i.value = obj[d.k] ?? "";
         i.addEventListener("change", () => { obj[d.k] = d.num ? Number(i.value) : i.value; changed(); });
@@ -330,12 +383,12 @@
         const i = $("textarea", f); i.value = (obj[d.k] || []).join("\n");
         i.addEventListener("input", () => { obj[d.k] = i.value.split("\n").map(x => x.trim()).filter(Boolean); changed(); });
       } else {
-        const tag = type === "textarea" ? `<textarea rows="3"></textarea>` : `<input type="${type === "number" ? "number" : "text"}" ${type === "number" ? 'inputmode="numeric" step="1"' : ""}>`;
+        const tag = type === "textarea" ? `<textarea rows="3"></textarea>` : `<input type="${type === "number" ? "number" : type === "date" ? "date" : "text"}" ${type === "number" ? 'inputmode="numeric" step="1"' : ""} ${d.upper ? 'autocapitalize="characters" spellcheck="false" style="text-transform:uppercase;letter-spacing:.08em;font-weight:700"' : ""}>`;
         f = el(`<label class="f ${d.full ? "f--full" : ""}">${lab}${d.price ? `<div class="price-row"><b>₹</b>${tag}</div>` : tag}</label>`);
         const i = $("input,textarea", f); i.value = obj[d.k] ?? "";
         const validate = () => d.check && i.classList.toggle("bad", !d.check(i.value));
         validate();
-        i.addEventListener("input", () => { obj[d.k] = type === "number" ? (i.value === "" ? 0 : Number(i.value)) : i.value; validate(); changed(); });
+        i.addEventListener("input", () => { obj[d.k] = type === "number" ? (i.value === "" ? 0 : Number(i.value)) : d.upper ? i.value.toUpperCase().replace(/\s+/g, "") : i.value; validate(); changed(); });
       }
       grid.append(f);
     });
@@ -489,6 +542,19 @@
       if (ids.has(s.id)) s.id += "-" + i; ids.add(s.id);
       if (!s.video) out.push(`“${s.name}” ka sample video nahi hai`);
     });
+    const codes = new Set();
+    data.coupons.forEach(c => {
+      if (c._plain) { c.hash = window.OfferKit.hashCode(c._plain); c.hint = window.OfferKit.hintOf(c._plain); }
+      if (c.popup) { c.code = c.code || c._plain || ""; if (!c.code) out.push(`“${c.name}” ka popup ON hai — coupon code dobara likho taaki popup mein dikh sake`); }
+      else delete c.code;
+      delete c._plain;
+      if (!c.hash) out.push(`Offer “${c.name}” ka coupon code khaali hai`);
+      else if (codes.has(c.hash)) out.push(`Coupon ${c.hint} do baar hai`);
+      codes.add(c.hash);
+      if (!(Number(c.value) > 0)) out.push(`Coupon ${c.hint} ka discount 0 hai`);
+      if (c.type !== "flat" && Number(c.value) > 90) out.push(`Coupon ${c.hint} ka discount ${c.value}% hai — sahi hai?`);
+    });
+    if (data.coupons.filter(c => c.popup && c.active).length > 1) out.push("Ek se zyada popup ON hain — website par sirf list ka pehla dikhega");
     data.portfolio.forEach(p => { if (!p.video) out.push(`Portfolio “${p.title}” ka video nahi hai`); });
     data.beforeAfter.forEach(b => { if (!b.before || !b.after) out.push(`Before/After “${b.label}” mein dono videos chahiye`); });
     return out;
@@ -497,6 +563,7 @@
     const draft = clone(data);
     const swap = o => { for (const k in o) { if (typeof o[k] === "string" && pending.has(o[k])) o[k] = pending.get(o[k]).url; else if (o[k] && typeof o[k] === "object") swap(o[k]); } };
     swap(draft);
+    (draft.coupons || []).forEach(c => { if (c.popup && !c.code && c._plain) c.code = c._plain; delete c._plain; });
     try { localStorage.setItem("site-draft", JSON.stringify(draft)); } catch (e) { toast("Preview save nahi hua"); return; }
     window.open("index.html?preview=1", "_blank");
   });

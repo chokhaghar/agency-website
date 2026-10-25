@@ -8,3 +8,6 @@ _build/icon.html
 *.tmp
 __pycache__/
 _build/sr/
+_previews/
+_build/**/*.jpg
+_build/**/*.json

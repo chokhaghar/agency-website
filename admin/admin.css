@@ -119,3 +119,7 @@ img,video{display:block;max-width:100%}
   #btnPreview::before{content:"👁";font-size:16px}
   .main{padding-bottom:140px}
 }
+
+.opv{max-width:400px;margin:6px auto 0;width:100%}
+.f input[type=color]{width:52px;height:42px;padding:3px;flex:none}
+.f input[type=date]{color-scheme:dark}

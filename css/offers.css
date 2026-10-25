@@ -1,0 +1,77 @@
+/* ===== Festive offer popup (themed via CSS vars from OfferKit) ===== */
+.offer{position:fixed;inset:0;z-index:170;display:grid;place-items:center;padding:16px;pointer-events:none}
+.offer.is-open{pointer-events:auto}
+.offer__backdrop{position:absolute;inset:0;background:rgba(2,4,10,.72);backdrop-filter:blur(8px);opacity:0;transition:opacity .45s}
+.offer.is-open .offer__backdrop{opacity:1}
+.offer__card{position:relative;width:min(420px,100%);max-height:calc(100svh - 32px);overflow:auto;overscroll-behavior:contain;scrollbar-width:none;
+  padding:30px 26px 22px;border-radius:30px;text-align:center;color:#fff;isolation:isolate;
+  background:radial-gradient(120% 80% at 50% 0%,color-mix(in srgb,var(--o-glow) 45%,transparent),transparent 60%),linear-gradient(170deg,var(--o-bg1),var(--o-bg2));
+  border:1px solid color-mix(in srgb,var(--o-ac) 45%,transparent);
+  box-shadow:0 40px 120px -20px color-mix(in srgb,var(--o-glow) 55%,transparent),inset 0 1px 0 rgba(255,255,255,.12);
+  opacity:0;transform:translateY(40px) scale(.9);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.34,1.56,.64,1)}
+.offer__card::-webkit-scrollbar{display:none}
+.offer.is-open .offer__card{opacity:1;transform:none}
+.offer__fx{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.offer__rays{position:absolute;left:50%;top:-30%;width:160%;aspect-ratio:1;translate:-50% 0;z-index:-2;opacity:.18;pointer-events:none;
+  background:repeating-conic-gradient(from 0deg,var(--o-ac) 0 6deg,transparent 6deg 18deg);mask:radial-gradient(circle,#000 10%,transparent 60%);-webkit-mask:radial-gradient(circle,#000 10%,transparent 60%);
+  animation:offerSpin 40s linear infinite}
+@keyframes offerSpin{to{rotate:360deg}}
+.offer__x{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.25);color:#fff;font-size:22px;line-height:1;cursor:pointer}
+.offer__emojis{display:flex;justify-content:center;gap:14px;font-size:40px;margin-bottom:6px}
+.offer__emojis span{display:inline-block;animation:offerBob 2.2s ease-in-out infinite;filter:drop-shadow(0 6px 14px color-mix(in srgb,var(--o-glow) 70%,transparent))}
+.offer__emojis span:nth-child(2){font-size:52px;margin-top:-8px}
+@keyframes offerBob{50%{translate:0 -8px;rotate:-6deg}}
+.offer__name{font-size:12px;font-weight:800;letter-spacing:.28em;text-transform:uppercase;color:var(--o-ac);margin:6px 0 4px}
+.offer__big{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:clamp(54px,15vw,76px);line-height:1;letter-spacing:-.04em}
+.offer__big span{background:linear-gradient(100deg,var(--o-ac) 20%,#fff 45%,var(--o-ac2) 70%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:offerShine 3s linear infinite}
+@keyframes offerShine{to{background-position:-200% 0}}
+.offer__head{font-size:17px;font-weight:700;margin:10px 0 4px;line-height:1.35}
+.offer__sub{font-size:14px;opacity:.8;margin:0 0 4px}
+.offer__code{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 12px;padding:10px 10px 10px 16px;border-radius:16px;border:2px dashed color-mix(in srgb,var(--o-ac) 70%,transparent);background:rgba(0,0,0,.28);text-align:left}
+.offer__code small{display:block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.7}
+.offer__code b{font-family:ui-monospace,Consolas,monospace;font-size:22px;letter-spacing:.12em;color:var(--o-ac)}
+.offer__code button{flex:none;height:40px;padding:0 16px;border-radius:12px;border:0;background:#fff;color:#111;font-weight:800;cursor:pointer;transition:transform .2s}
+.offer__code button:active{transform:scale(.95)}
+.offer__code button.is-done{background:#22c55e;color:#fff}
+.offer__timer{font-size:13px;opacity:.9;margin-bottom:14px}
+.offer__timer b{font-family:ui-monospace,Consolas,monospace;color:var(--o-ac);font-size:14px}
+.offer__claim{width:100%;height:56px;border:0;border-radius:999px;cursor:pointer;font-weight:800;font-size:17px;color:#1a1204;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#fff 0%,var(--o-ac) 40%,var(--o-ac2) 100%);box-shadow:0 14px 40px -10px var(--o-glow);animation:offerPulse 2s ease-in-out infinite}
+.offer__claim::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.7) 50%,transparent 70%);transform:translateX(-120%);animation:offerSweep 2.6s ease-in-out infinite}
+@keyframes offerSweep{60%,100%{transform:translateX(120%)}}
+@keyframes offerPulse{50%{transform:scale(1.03)}}
+.offer__later{margin-top:10px;background:none;border:0;color:#fff;opacity:.6;font-size:13px;cursor:pointer;text-decoration:underline}
+.offer--inline{position:relative;inset:auto;padding:0;z-index:auto;pointer-events:auto}
+.offer--inline .offer__card{opacity:1;transform:none;max-height:none;width:100%}
+
+/* reopen tab + claimed pill */
+.offer-tab{position:fixed;left:16px;bottom:20px;z-index:84;display:flex;align-items:center;gap:8px;height:48px;padding:0 16px 0 12px;border-radius:999px;border:1px solid color-mix(in srgb,var(--o-ac) 60%,transparent);cursor:pointer;
+  color:#fff;font-weight:800;font-size:14px;background:linear-gradient(135deg,var(--o-bg1),var(--o-bg2));box-shadow:0 12px 30px -8px var(--o-glow);animation:offerBob 3s ease-in-out infinite;max-width:calc(100% - 110px)}
+.offer-tab em{font-style:normal;font-size:22px}
+.offer-tab span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.offer-tab.is-claimed{animation:none;cursor:default}
+.offer-tab small{display:block;font-size:10.5px;font-weight:600;opacity:.75;letter-spacing:.04em}
+
+/* discounted prices */
+.scard__price s,.om__strike{opacity:.6;font-size:15px;margin-left:8px;font-weight:600}
+.scard__price .off,.price-off{display:inline-block;margin-left:8px;padding:3px 8px;border-radius:8px;font-size:12px;font-weight:800;vertical-align:middle;background:var(--o-ac,#22c55e);color:#1a1204}
+.scard.has-offer{border-color:color-mix(in srgb,var(--o-ac,#F5B83D) 55%,transparent)}
+.scard__ribbon{position:absolute;right:12px;bottom:14px;z-index:2;padding:5px 10px;border-radius:9px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:linear-gradient(135deg,var(--o-ac),var(--o-ac2));color:#1a1204}
+
+/* coupon row in order form */
+.coupon{display:grid;gap:6px}
+.coupon__row{display:flex;gap:8px}
+.coupon__row input{flex:1;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.coupon__row button{flex:none;padding:0 18px;border-radius:14px;border:1px solid var(--line2);background:var(--card2);color:var(--text);font-weight:700;cursor:pointer}
+.coupon__msg{font-size:13px;font-weight:600;min-height:18px}
+.coupon__msg.ok{color:#4ade80}.coupon__msg.err{color:#f87171}
+.coupon.is-locked input{opacity:.85;border-style:dashed;border-color:#4ade80}
+.om__total{flex-wrap:wrap;gap:4px 10px}
+.om__total .om__save{flex-basis:100%;font-size:12.5px;color:#4ade80;font-weight:700}
+
+@media (max-width:640px){
+  .offer{place-items:end center;padding:0}
+  .offer__card{width:100%;border-radius:28px 28px 0 0;padding:26px 20px calc(18px + env(safe-area-inset-bottom));max-height:94svh}
+  .offer__emojis{font-size:34px}.offer__emojis span:nth-child(2){font-size:44px}
+  .offer-tab{left:12px;bottom:14px;height:46px;font-size:13px}
+}

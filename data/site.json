@@ -588,8 +588,22 @@
       "a": "1080×1920 vertical (Reels / Shorts / Ads), 60 fps, MP4. 16:9 YouTube version bhi add karwa sakte ho."
     }
   ],
-  "heroShowreel": {
-    "video": "assets/video/hero-showreel.mp4",
-    "poster": "assets/img/hero-showreel.jpg"
-  }
+  "coupons": [
+    {
+      "code": "DIWALI20",
+      "name": "Diwali Offer",
+      "type": "percent",
+      "value": 20,
+      "active": true,
+      "expires": "2026-11-15",
+      "popup": true,
+      "headline": "",
+      "subtext": "Har edit style par 20% OFF — sirf Diwali tak!",
+      "theme": "auto",
+      "color": "",
+      "emoji": "",
+      "hash": "a8621cba24aad28cf38d8c8de360650eeeee661e70a998b4dd5a8e25589365c7",
+      "hint": "DI••••20"
+    }
+  ]
 }

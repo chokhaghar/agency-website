@@ -51,7 +51,8 @@
     const a = e.target.closest("[data-wa]");
     if (!a) return;
     e.preventDefault();
-    openWA(a.dataset.wa || "Hi!");
+    const extra = a.hasAttribute("data-coupon") && claimed ? `\n🎟️ Coupon: ${claimed.code} (${OK.offText(claimed)})` : "";
+    openWA((a.dataset.wa || "Hi!") + extra);
   });
   let toastT;
   function toast(msg) {
@@ -101,16 +102,6 @@
       <video muted loop playsinline preload="none" poster="${esc(media(p.poster))}" data-src="${esc(media(p.video))}"></video>
       ${p.tag ? `<span class="phone__tag">${esc(p.tag)}</span>` : ""}</div></div>`).join(""));
   $$("#heroPhones video").forEach(v => autoIO.observe(v));
-  // phones: full-screen raw→edited showreel behind the hero text (first impression = visuals)
-  const mobileHero = matchMedia("(max-width: 960px)");
-  const reel = D.heroShowreel || hp[1] || hp[0];
-  if (reel?.video) {
-    const rv = $("#heroReel video");
-    rv.poster = media(reel.poster);
-    const useReel = () => { if (mobileHero.matches && !rv.getAttribute("src")) { rv.preload = "auto"; rv.src = media(reel.video); } if (mobileHero.matches) playSafe(rv); else rv.pause(); };
-    useReel(); mobileHero.addEventListener?.("change", useReel);
-    document.addEventListener("visibilitychange", () => { if (!document.hidden && mobileHero.matches) playSafe(rv); });
-  } else $("#heroReel").hidden = true;
 
   /* ---------- Brands marquee ---------- */
   const initials = n => String(n).split(/\s+/).filter(w => /[A-Za-z0-9]/.test(w[0] || "")).slice(0, 2).map(w => w[0]).join("").toUpperCase();
@@ -152,6 +143,78 @@
   $("#addonsList").innerHTML = addons.map(a => `<li><span>${esc(a.name)}</span><b>+ ${rupee(a.price)}</b></li>`).join("");
   if (!addons.length) $(".addons").hidden = true;
 
+  /* ---------- Offers & coupons ---------- */
+  const OK = window.OfferKit;
+  const coupons = (D.coupons || []).map(c => ({ ...c, code: c.code ? String(c.code).trim().toUpperCase() : "" }));
+  const couponState = code => {
+    if (!OK) return { err: "Coupon abhi check nahi ho pa raha" };
+    code = OK.norm(code);
+    const h = code && OK.hashCode(code);
+    const c = h && coupons.find(x => x.hash === h);
+    if (!c) return { err: "Ye coupon code sahi nahi hai" };
+    if (!OK.isValid(c)) return { err: c.active ? "Ye code expire ho gaya hai" : "Ye code ab active nahi hai" };
+    return { c: { ...c, code } };
+  };
+  const discount = (amt, c) => !c ? 0 : c.type === "flat" ? Math.min(amt, Number(c.value) || 0) : Math.round(amt * (Number(c.value) || 0) / 100);
+  let claimed = null;
+  try {
+    const k = localStorage.getItem("offer-claimed");
+    if (k) { const c = coupons.find(x => x.hash === k); claimed = c && OK?.isValid(c) && c.code ? c : null; if (!claimed) localStorage.removeItem("offer-claimed"); }
+  } catch (e) {}
+  function applyTheme(c) {
+    const th = OK.themeFor(c.name, c.theme, c), r = document.documentElement.style;
+    r.setProperty("--o-bg1", th.bg[0]); r.setProperty("--o-bg2", th.bg[1]); r.setProperty("--o-glow", th.glow);
+    r.setProperty("--o-ac", th.accent); r.setProperty("--o-ac2", th.accent2);
+    return th;
+  }
+  function paintPrices() {
+    $$(".scard").forEach(card => {
+      const s = svcById[card.dataset.id], box = $(".scard__price", card);
+      $(".scard__ribbon", card)?.remove();
+      card.classList.toggle("has-offer", !!claimed);
+      if (claimed) {
+        box.innerHTML = `<b>${rupee(s.price - discount(s.price, claimed))}</b><s>${rupee(s.price)}</s><small>${esc(s.unit)} · ${esc(OK.offText(claimed))}</small>`;
+        $(".scard__media", card).insertAdjacentHTML("beforeend", `<span class="scard__ribbon">${esc(claimed.name || "Offer")}</span>`);
+      } else box.innerHTML = `<b>${rupee(s.price)}</b><small>${esc(s.unit)}</small>`;
+    });
+    $("#cStyle").innerHTML = `<option value="">Not sure yet — suggest me</option>` + services.map(s => `<option value="${esc(s.id)}">${esc(s.name)} — ${rupee(s.price - discount(s.price, claimed))}${claimed ? " (offer)" : ""}</option>`).join("");
+    const cc = $("#cCoupon");
+    if (cc && claimed) { cc.value = claimed.code; cc.disabled = true; }
+  }
+  function showTab(c, isClaimed) {
+    $(".offer-tab")?.remove();
+    const th = OK.themeFor(c.name, c.theme, c);
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "offer-tab" + (isClaimed ? " is-claimed" : "");
+    b.innerHTML = isClaimed
+      ? `<em>${esc(th.emojis[0])}</em><span>${esc(OK.offText(c))} applied<small>${esc(c.code)} · edit style chuno</small></span>`
+      : `<em>🎁</em><span>${esc(OK.offText(c))}<small>${esc(c.name || "Offer")} · claim karo</small></span>`;
+    b.addEventListener("click", () => isClaimed ? goStyles() : openPopup());
+    document.body.append(b);
+  }
+  const goStyles = () => { const tg = $("#styles"); lenis ? lenis.scrollTo(tg, { offset: -70, duration: 1.2 }) : scrollTo({ top: tg.getBoundingClientRect().top + scrollY - 70, behavior: "smooth" }); };
+  function claim(c) {
+    claimed = c;
+    try { localStorage.setItem("offer-claimed", c.hash); } catch (e) {}
+    applyTheme(c); paintPrices(); showTab(c, true);
+    toast(`🎉 ${OK.offText(c)} unlock ho gaya! Ab apna edit style chuno.`);
+    setTimeout(goStyles, 450);
+  }
+  const popupCoupon = OK ? coupons.find(c => c.popup && c.code && OK.isValid(c)) : null;
+  function openPopup() {
+    if (!popupCoupon || claimed || $(".offer.is-open")) return;
+    $(".offer-tab")?.remove();
+    OK.open(popupCoupon, { onClaim: claim, onClose: () => { try { sessionStorage.setItem("offer-seen", "1"); } catch (e) {} showTab(popupCoupon, false); } });
+  }
+  if (claimed) { applyTheme(claimed); showTab(claimed, true); }
+  else if (popupCoupon) {
+    applyTheme(popupCoupon);
+    let seen = false; try { seen = sessionStorage.getItem("offer-seen") === "1"; } catch (e) {}
+    if (seen && !isPreview) showTab(popupCoupon, false);
+    else setTimeout(() => { if ($(".modal.is-open")) showTab(popupCoupon, false); else openPopup(); }, isPreview ? 1600 : 3200);
+  }
+  paintPrices();
+
   /* ---------- Packages ---------- */
   $("#packagesGrid").innerHTML = (D.packages || []).map(p => `
     <article class="pk reveal ${p.featured ? "pk--feat" : ""}">
@@ -159,7 +222,7 @@
       <h3>${esc(p.name)}</h3><p class="pk__reels">${esc(p.reels)}</p>
       <div class="pk__price">${rupee(p.price)} <small>${esc(p.per)}</small></div>
       <ul>${(p.items || []).map(i => `<li>${esc(i)}</li>`).join("")}</ul>
-      <button class="btn ${p.featured ? "btn--gold" : "btn--ghost"}" data-wa="${esc(`Hi! Mujhe *${p.name}* monthly package (${p.reels}, ${rupee(p.price)} ${p.per}) ke baare mein baat karni hai.`)}">Get ${esc(p.name)}</button>
+      <button class="btn ${p.featured ? "btn--gold" : "btn--ghost"}" data-wa="${esc(`Hi! Mujhe *${p.name}* monthly package (${p.reels}, ${rupee(p.price)} ${p.per}) ke baare mein baat karni hai.`)}" data-coupon>Get ${esc(p.name)}</button>
     </article>`).join("");
   if (!(D.packages || []).length) $("#packages").hidden = true;
 
@@ -215,17 +278,19 @@
   }
 
   /* ---------- Contact form ---------- */
-  $("#cStyle").innerHTML = `<option value="">Not sure yet — suggest me</option>` + services.map(s => `<option value="${esc(s.id)}">${esc(s.name)} — ${rupee(s.price)}</option>`).join("");
   $("#contactForm").addEventListener("submit", e => {
     e.preventDefault();
     const f = e.target, name = f.name.value.trim();
     if (!name) { f.name.classList.add("is-err"); f.name.focus(); toast("Apna naam likh dijiye 🙏"); return; }
     const s = svcById[f.style.value];
+    let cp = claimed;
+    if (!cp && f.coupon.value.trim()) { const r = couponState(f.coupon.value); if (r.err) { f.coupon.classList.add("is-err"); toast(r.err); return; } cp = r.c; }
     const lines = [
       `👤 Name: ${name}`,
       f.project.value.trim() && `🏢 Project: ${f.project.value.trim()}`,
       `🎬 Style: ${s ? `${s.name} (${rupee(s.price)} ${s.unit})` : "Suggest karo"}`,
-      f.msg.value.trim() && `📝 ${f.msg.value.trim()}`
+      f.msg.value.trim() && `📝 ${f.msg.value.trim()}`,
+      cp && `🎟️ Coupon: ${cp.code} (${OK.offText(cp)})${cp === claimed ? " — offer claim kiya" : ""}`
     ].filter(Boolean);
     openWA(`*New enquiry — ${G.brand} website*\n\n` + lines.join("\n"));
   });
@@ -256,23 +321,47 @@
   if (!addons.length) $("#omAddons").hidden = true;
   const QTY = { "1": 1, "2": 2, "3–5": 3, "6–10": 6, "10+": 10 };
   const expressAddon = addons.find(a => /express/i.test(a.name));
+  let manual = null;
+  const codeIn = $("#omCode"), codeMsg = $("#omCouponMsg");
+  const setMsg = (t, ok) => { codeMsg.textContent = t; codeMsg.className = "coupon__msg " + (t ? (ok ? "ok" : "err") : ""); };
+  function tryApply() {
+    const r = couponState(codeIn.value);
+    if (r.err) { manual = null; setMsg("✗ " + r.err, false); }
+    else { manual = r.c; codeIn.value = r.c.code; setMsg(`✓ ${OK.offText(r.c)} laga diya (${r.c.name || "coupon"})`, true); }
+    calcTotal();
+    return !r.err;
+  }
+  $("#omApply").addEventListener("click", tryApply);
+  codeIn.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); tryApply(); } });
+  codeIn.addEventListener("input", () => { if (manual && codeIn.value.trim().toUpperCase() !== manual.code) { manual = null; setMsg(""); calcTotal(); } });
   function calcTotal() {
     if (!current) return { txt: "" };
     const checked = $$("input[name=addon]:checked", of).map(c => addons[c.value]);
     const add = checked.reduce((s, a) => s + Number(a.price || 0), 0);
     const exp = of.deadline.value.startsWith("Express") && expressAddon && !checked.includes(expressAddon) ? Number(expressAddon.price) : 0;
     const q = QTY[of.qty.value] || 1;
-    const txt = (/[–+]/.test(of.qty.value) ? "from " : "") + rupee((Number(current.price) + add + exp) * q);
-    $("#omTotal").textContent = txt;
-    return { txt };
+    const gross = (Number(current.price) + add + exp) * q, cp = claimed || manual, off = discount(gross, cp), net = gross - off;
+    const pre = /[–+]/.test(of.qty.value) ? "from " : "";
+    $("#omTotal").innerHTML = pre + rupee(net) + (off ? ` <s class="om__strike">${rupee(gross)}</s>` : "");
+    $("#omSave").hidden = !off;
+    if (off) $("#omSave").textContent = `🎉 Aapki bachat ${rupee(off)} — ${cp.code}`;
+    return { txt: off ? `~${pre}${rupee(gross)}~ → *${pre}${rupee(net)}*` : pre + rupee(net), cp };
   }
   of.addEventListener("change", calcTotal);
   function openOrder(id) {
     current = svcById[id]; if (!current) return;
     $("#omTitle").textContent = current.name;
-    $("#omPrice").textContent = `${rupee(current.price)} ${current.unit} · ${current.delivery} delivery`;
+    $("#omPrice").innerHTML = claimed
+      ? `${rupee(current.price - discount(current.price, claimed))} <s class="om__strike">${rupee(current.price)}</s> ${esc(current.unit)} · ${esc(current.delivery)} delivery`
+      : `${rupee(current.price)} ${esc(current.unit)} · ${esc(current.delivery)} delivery`;
     const v = $("#omVid"); v.poster = media(current.poster); v.src = media(current.preview || current.video); playSafe(v);
-    of.reset(); $$(".is-err", of).forEach(x => x.classList.remove("is-err")); calcTotal(); openModal(om);
+    of.reset(); $$(".is-err", of).forEach(x => x.classList.remove("is-err"));
+    manual = null;
+    $("#omCoupon").classList.toggle("is-locked", !!claimed);
+    codeIn.disabled = !!claimed; $("#omApply").hidden = !!claimed;
+    if (claimed) { codeIn.value = claimed.code; setMsg(`🎉 ${claimed.name || "Offer"} claim kiya hua hai — ${OK.offText(claimed)} already laga hai`, true); }
+    else { codeIn.value = ""; setMsg(""); }
+    calcTotal(); openModal(om);
     $(".modal__panel", om).scrollTop = 0;
   }
   document.addEventListener("click", e => {
@@ -283,6 +372,8 @@
     e.preventDefault();
     const name = of.name.value.trim();
     if (!name) { of.name.classList.add("is-err"); of.name.focus(); toast("Apna naam likh dijiye 🙏"); return; }
+    if (!claimed && codeIn.value.trim() && (!manual || manual.code !== codeIn.value.trim().toUpperCase()) && !tryApply()) { codeIn.focus(); toast("Coupon code check karo"); return; }
+    const tot = calcTotal();
     const adds = $$("input[name=addon]:checked", of).map(c => addons[c.value].name);
     const v = k => of[k].value.trim();
     const lines = [
@@ -294,9 +385,10 @@
       `📁 Footage: ${v("footage")}`,
       `⏱️ Delivery: ${v("deadline")}`,
       adds.length && `➕ Add-ons: ${adds.join(", ")}`,
-      v("notes") && `📝 Notes: ${v("notes")}`
+      v("notes") && `📝 Notes: ${v("notes")}`,
+      tot.cp && `🎟️ Coupon: ${tot.cp.code} (${OK.offText(tot.cp)})${tot.cp === claimed ? " — popup se claim kiya" : ""}`
     ].filter(Boolean);
-    openWA(`*New order — ${G.brand} website*\n\n` + lines.join("\n") + `\n\n💰 Estimated: ${calcTotal().txt}`);
+    openWA(`*New order — ${G.brand} website*\n\n` + lines.join("\n") + `\n\n💰 Estimated: ${tot.txt}`);
     closeModal(om);
   });
 
