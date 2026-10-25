@@ -492,19 +492,6 @@
         "3D wall text tracking",
         "Anti-copy watermark"
       ]
-    },
-    {
-      "label": "Event",
-      "project": "Kalyan Ji Bhugasra",
-      "before": "assets/ba/portrait-before.mp4",
-      "after": "assets/ba/portrait-after.mp4",
-      "beforePoster": "assets/ba/portrait-before.jpg",
-      "afterPoster": "assets/ba/portrait-after.jpg",
-      "changes": [
-        "Reframed to 9:16",
-        "Contrast + skin tone",
-        "Name title graphic"
-      ]
     }
   ],
   "process": [
