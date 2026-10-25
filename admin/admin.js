@@ -116,7 +116,7 @@
   const TEXT_HINTS = { "hero.rotator": "comma se alag karo — ye words ghoomte rahenge", "wa.default": "floating WhatsApp button dabane par jaane wala message" };
 
   /* ---------- state ---------- */
-  let data = null, saved = "", backend = null, current = "general", loadedSha = null;
+  let data = null, saved = "", backend = null, current = "general", loadedSha = null, session = null;
   const pending = new Map(); // path -> { blob, url, done }
   const openCards = new Set();
 
@@ -147,8 +147,8 @@
   const ghCfg = () => { try { return JSON.parse(localStorage.getItem("gh-admin") || "{}"); } catch (e) { return {}; } };
   const github = {
     name: "github",
-    get cfg() { return ghCfg(); },
-    get label() { const c = this.cfg; return `GitHub — ${c.owner || "?"}/${c.repo || "?"} (${c.branch || "main"})${c.token ? "" : " · read-only: token daalo"}`; },
+    get cfg() { return { ...ghCfg(), token: session?.token || "" }; },
+    get label() { const c = this.cfg; return `Online — ${c.owner || "?"}/${c.repo || "?"}${session?.user ? " · " + session.user : ""}`; },
     canSave() { const c = this.cfg; return !!(c.owner && c.repo && c.token); },
     async api(path, opt = {}) {
       const c = this.cfg;
@@ -213,7 +213,11 @@
         localStorage.setItem("gh-admin", JSON.stringify(c));
       }
       backend = github;
+      const gc = ghCfg();
+      if (!gc.owner || !gc.repo) { document.body.classList.remove("locked"); $("#main").innerHTML = `<div class="empty err">Ye admin sirf GitHub Pages ya local PC (Start Website.bat) par chalta hai.</div>`; return; }
+      session = await window.AdminGate.ensure({ owner: gc.owner, repo: gc.repo, branch: gc.branch || "main" });
     }
+    document.body.classList.remove("locked");
     $("#modeLabel").textContent = backend.label;
     try {
       data = backend === github && !github.cfg.owner ? await local.load() : await backend.load();
@@ -224,7 +228,7 @@
     saved = JSON.stringify(data);
     if (data.general?.logo) $("#topLogo").src = data.general.logo;
     renderSide();
-    go(backend === github && !github.canSave() ? "_conn" : (location.hash.slice(1) || "general"));
+    go(location.hash.slice(1) || "general");
     markDirty();
   }
   function normalize() {
@@ -237,7 +241,7 @@
   /* ---------- navigation ---------- */
   function renderSide() {
     $("#side").innerHTML = SECTIONS.map(s => `<a data-go="${s.key}">${s.icon} ${esc(s.label)}${s.kind === "list" ? `<span class="n">${data[s.key].length}</span>` : ""}</a>`).join("") +
-      `<hr><a data-go="_conn">🔐 Connection / GitHub</a><a href="index.html" target="_blank">🌐 Live website kholo</a>`;
+      `<hr><a data-go="_conn">🔐 Account / Login</a><a href="index.html" target="_blank">🌐 Live website kholo</a>`;
     $$("#side a").forEach(a => a.classList.toggle("on", a.dataset.go === current));
   }
   $("#side").addEventListener("click", e => { const a = e.target.closest("[data-go]"); if (a) { e.preventDefault(); go(a.dataset.go); } });
@@ -485,45 +489,43 @@
   }
   $("#libDlg").addEventListener("click", e => { if (e.target.id === "libDlg" || e.target.closest("[data-close]")) $("#libDlg").hidden = true; });
 
-  /* ---------- connection page ---------- */
+  /* ---------- account page ---------- */
   function renderConn(m) {
-    const c = ghCfg();
-    const isLocal = backend === local;
-    m.innerHTML = `<div class="ph"><div><h1>🔐 Connection</h1><p>${isLocal ? "Abhi aap <b>local PC</b> par ho — Save dabane par files seedha is computer mein save hongi. GitHub par daalne ke baad yahi admin panel online bhi chalega." : "Website GitHub par hai. Save karne ke liye ek baar GitHub token daalo (sirf is browser mein save hota hai)."}</p></div></div>
+    if (backend === local) {
+      m.innerHTML = `<div class="ph"><div><h1>🔐 Account</h1><p>Abhi aap <b>apne PC</b> par ho (Start Website.bat). Yahan login nahi lagta kyunki ye sirf aapke computer par chalta hai — Save karne par files isi computer mein save hoti hain. Online admin ka login GitHub wale admin link par hai.</p></div></div>`;
+      return;
+    }
+    const cfg = github.cfg;
+    m.innerHTML = `<div class="ph"><div><h1>🔐 Account</h1><p>Logged in: <b>${esc(session?.user || "")}</b> · ${esc(cfg.owner)}/${esc(cfg.repo)}</p></div>
+        <div class="ph__btns"><button class="b b--red" id="aOut">Logout</button></div></div>
       <div class="card solo setup">
+        <h3 style="margin-top:0">Username / password badlo</h3>
         <div class="grid">
-          <label class="f"><span>GitHub username</span><input id="gOwner" value="${esc(c.owner || "")}" placeholder="jaise: umeshedits"></label>
-          <label class="f"><span>Repository naam</span><input id="gRepo" value="${esc(c.repo || "")}" placeholder="jaise: website"></label>
-          <label class="f"><span>Branch</span><input id="gBranch" value="${esc(c.branch || "main")}"></label>
-          <label class="f"><span>Token <em>— github_pat_…</em></span><input id="gToken" type="password" value="${esc(c.token || "")}" placeholder="paste token" autocomplete="off"></label>
+          <label class="f"><span>Naya username</span><input id="aU" value="${esc(session?.user || "")}" autocapitalize="none" spellcheck="false" autocomplete="username"></label>
+          <label class="f"><span>Naya password <em>(10+ characters)</em></span><input id="aP" type="password" autocomplete="new-password"></label>
+          <label class="f"><span>Password dobara</span><input id="aP2" type="password" autocomplete="new-password"></label>
+          <label class="f"><span>Naya GitHub token <em>(sirf token expire / badalna ho to)</em></span><input id="aT" type="password" autocomplete="off" placeholder="khaali chhodo = purana token"></label>
         </div>
-        <div class="media__btns" style="margin-top:14px">
-          <button class="b b--gold" id="gSave">Save & test connection</button>
-          ${c.token ? `<button class="b b--red" id="gOut">Logout (token hatao)</button>` : ""}
-        </div>
-        <p id="gMsg"></p>
-        <h3>Token kaise banaye (1 baar, 2 minute)</h3>
-        <ol>
-          <li>GitHub mein login karke kholo: <code>github.com/settings/personal-access-tokens/new</code></li>
-          <li><b>Token name</b>: Website Admin · <b>Expiration</b>: 1 year</li>
-          <li><b>Repository access</b>: “Only select repositories” → apni website wali repo chuno</li>
-          <li><b>Permissions → Repository → Contents</b>: “Read and write”</li>
-          <li>“Generate token” dabao, token copy karke upar paste karo → Save.</li>
-        </ol>
-        <p class="media__note">Token password jaisa hai — kisi ko mat bhejna. Jis phone / laptop se admin chalana hai, wahan ek baar daalna hoga.</p>
+        <div class="media__btns" style="margin-top:14px"><button class="b b--gold" id="aSave">Save login</button></div>
+        <p id="aMsg"></p>
+        <p class="media__note">Login badalne ke baad har device par naya username / password lagega. Token aapke password se encrypt hokar repo mein save hota hai — bina password koi use nahi kar sakta.</p>
       </div>`;
-    $("#gSave").onclick = async () => {
-      const n = { owner: $("#gOwner").value.trim(), repo: $("#gRepo").value.trim(), branch: $("#gBranch").value.trim() || "main", token: $("#gToken").value.trim() };
-      localStorage.setItem("gh-admin", JSON.stringify(n));
-      const msg = $("#gMsg"); msg.className = ""; msg.textContent = "Checking…";
+    $("#aOut").onclick = () => { if ($("#dirty").hidden || confirm("Unsaved changes hain — phir bhi logout karein?")) window.AdminGate.logout(); };
+    $("#aSave").onclick = async () => {
+      const msg = $("#aMsg"), u = $("#aU").value, p = $("#aP").value, t = $("#aT").value.trim();
+      msg.className = ""; msg.textContent = "";
+      if (p !== $("#aP2").value) { msg.className = "err"; msg.textContent = "✗ Dono password same nahi hain"; return; }
+      msg.textContent = "Saving…";
       try {
-        const r = await github.api("");
-        if (!r.permissions?.push) throw new Error("Token ko is repo mein likhne ki permission nahi (Contents: Read and write chahiye)");
-        msg.className = "ok"; msg.textContent = `✓ Connected: ${r.full_name}`;
-        if (!isLocal) { backend = github; $("#modeLabel").textContent = github.label; if ($("#dirty").hidden) { data = await github.load(); normalize(); saved = JSON.stringify(data); renderSide(); } markDirty(); }
+        let token = session.token;
+        if (t) { await window.AdminGate.checkToken(cfg, t); token = t; }
+        await window.AdminGate.changeLogin(cfg, token, u, p);
+        session = window.AdminGate.getSession();
+        msg.className = "ok"; msg.textContent = "✓ Login update ho gaya";
+        $("#modeLabel").textContent = github.label;
+        $("#aP").value = $("#aP2").value = $("#aT").value = "";
       } catch (e) { msg.className = "err"; msg.textContent = "✗ " + e.message; }
     };
-    $("#gOut")?.addEventListener("click", () => { const n = ghCfg(); delete n.token; localStorage.setItem("gh-admin", JSON.stringify(n)); $("#modeLabel").textContent = backend.label; markDirty(); render(); });
   }
 
   /* ---------- preview & save ---------- */
