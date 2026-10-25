@@ -2,7 +2,7 @@
 import { spawn } from "node:child_process";
 import { mkdirSync, writeFileSync, readFileSync } from "node:fs";
 
-const base = "http://localhost:5500/";
+const base = process.argv[3] || "http://localhost:5500/";
 const out = process.argv[2] || "offer_shots";
 mkdirSync(out, { recursive: true });
 const site = JSON.parse(readFileSync("../data/site.json", "utf8"));

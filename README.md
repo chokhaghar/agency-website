@@ -9,7 +9,7 @@ Admin panel mein ye sab badal sakte ho:
 |---|---|
 | ⚙️ General | Naam, logo, **WhatsApp number**, phone, email, Instagram |
 | 🎁 Offers & Coupons | Festive popup (naam se apne aap theme), coupon codes, ON/OFF, last date |
-| 💰 Edit Styles & Rates | Har style ka rate, level (1–5), delivery, features, sample video |
+| 💰 Edit Styles & Rates | Har style ka rate, delivery, features, sample video |
 | ➕ Add-ons / 📦 Packages | Extra services aur monthly plans ke rates |
 | 🎬 Portfolio | Naya kaam add karo (video upload → poster apne aap banta hai) |
 | ↔️ Before / After | Raw + edited video pairs |
