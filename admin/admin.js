@@ -10,7 +10,6 @@
   const isVideo = p => /\.(mp4|webm|mov|m4v)$/i.test(p || "");
 
   /* ---------- schema ---------- */
-  const LEVELS = [[1, "1 — Simple (captions, cards)"], [2, "2 — Basic (beat sync, colour grade)"], [3, "3 — Medium (transitions, titles)"], [4, "4 — Heavy (tracking, VO sync, map pins)"], [5, "5 — Very heavy (3D tracking, roto)"]];
   const SECTIONS = [
     { key: "general", label: "General", icon: "⚙️", kind: "obj", desc: "Naam, logo, WhatsApp number, contact details.", fields: [
       { k: "brand", label: "Brand ka poora naam", full: true },
@@ -24,12 +23,11 @@
       { k: "instagram", label: "Instagram link" },
       { k: "city", label: "City" }
     ] },
-    { key: "services", label: "Edit Styles & Rates", icon: "💰", kind: "list", desc: "Har edit style ka naam, rate, level, sample video. Jitni zyada editing (tracking, 3D), utna level aur rate.", title: "name", sub: i => `${rupee(i.price)} · Level ${i.level || "-"} · ${i.delivery || ""}`, thumb: "poster", sortPrice: true,
+    { key: "services", label: "Edit Styles & Rates", icon: "💰", kind: "list", desc: "Har edit style ka naam, rate, sample video. Jitni zyada editing (tracking, 3D), utna rate.", title: "name", sub: i => `${rupee(i.price)} · ${i.delivery || ""}`, thumb: "poster", sortPrice: true,
       tpl: () => ({ id: "style-" + Date.now().toString(36), name: "New edit style", price: 1999, unit: "per reel", delivery: "48 hr", level: 2, tag: "", desc: "", features: [], video: "", preview: "", poster: "" }),
       fields: [
         { k: "name", label: "Style ka naam" },
         { k: "price", label: "Rate (₹)", type: "number", price: true },
-        { k: "level", label: "Editing level", type: "select", options: LEVELS, num: true },
         { k: "unit", label: "Rate kis cheez ka", hint: "per reel / per video" },
         { k: "delivery", label: "Delivery time", hint: "48 hr" },
         { k: "tag", label: "Badge (optional)", hint: "Most popular / Premium / Budget" },
@@ -69,6 +67,9 @@
         { k: "beforePoster", label: "Before poster", type: "image" }, { k: "afterPoster", label: "After poster", type: "image" },
         { k: "changes", label: "Kya badla (har line ek point)", type: "lines", full: true }
       ] },
+    { key: "heroShowreel", label: "Mobile Showreel (top)", icon: "🎞", kind: "obj", desc: "Mobile par pehli screen ke peeche poora chalne wala video. Best: raw → edited wipe wala 10–20 sec ka vertical reel.", fields: [
+      { k: "video", label: "Showreel video", type: "video", full: true, posterKey: "poster" },
+      { k: "poster", label: "Poster", type: "image", full: true }] },
     { key: "heroPhones", label: "Hero Reels (top)", icon: "📱", kind: "list", max: 3, desc: "Sabse upar 3 phones mein chalne wale videos (beech wala = 2nd). Chhote 5–6 sec loops best hain.", title: "tag", sub: () => "", thumb: "poster",
       tpl: () => ({ tag: "New", video: "", poster: "" }),
       fields: [{ k: "tag", label: "Phone ke neeche label", full: true }, { k: "video", label: "Video", type: "video", full: true, posterKey: "poster" }, { k: "poster", label: "Poster", type: "image", full: true }] },
@@ -238,8 +239,8 @@
       if (!s.max || data[s.key].length < s.max) html += `<button class="b b--gold b--sm" data-act="add">+ Naya add karo</button>`;
     }
     html += `</div></div>`;
-    if (s.key === "services") html += `<div class="hint">💡 Rate rule: Level 5 (3D tracking, roto) sabse mehenga → Level 1 (sirf captions) sabse sasta. Upar wala card website par pehle dikhega — ↑ ↓ se order badlo.</div>`;
-    if (s.key === "portfolio" || s.key === "heroPhones" || s.key === "services") html += `<div class="hint">🎞 Bade videos (25 MB+) website slow karte hain. Pehle <b>tools\\Video-Chhota-Karo.bat</b> par video drag karo, phir uski <b>_web.mp4</b> file yahan upload karo.</div>`;
+    if (s.key === "services") html += `<div class="hint">💡 Rate rule: sabse zyada kaam (3D tracking, roto) sabse mehenga → sirf captions sabse sasta. Upar wala card website par pehle dikhega — ↑ ↓ se order badlo.</div>`;
+    if (["portfolio", "heroPhones", "services", "heroShowreel"].includes(s.key)) html += `<div class="hint">🎞 Bade videos (25 MB+) website slow karte hain. Pehle <b>tools\\Video-Chhota-Karo.bat</b> par video drag karo, phir uski <b>_web.mp4</b> file yahan upload karo.</div>`;
     m.innerHTML = html + `<div id="ed"></div>`;
     const ed = $("#ed");
     if (s.kind === "obj") { const c = el(`<div class="card solo"><div class="grid"></div></div>`); fields(s.fields, data[s.key], $(".grid", c)); ed.append(c); }

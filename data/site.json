@@ -37,7 +37,7 @@
     "ba.cta": "Mujhe bhi aisa edit chahiye",
     "styles.kicker": "02 — Edit Styles & Price",
     "styles.title": "Pick a style. Know the price upfront.",
-    "styles.sub": "Jitni zyada editing (3D tracking, map pins, VO sync), utna level aur price. Sample dekho, “Select this style” dabao — order seedha hamare WhatsApp par aa jayega.",
+    "styles.sub": "Jitna zyada editing ka kaam (3D tracking, map pins, VO sync), utna rate. Sample dekho, “Select this style” dabao — order seedha hamare WhatsApp par aa jayega.",
     "styles.btn": "Select this style",
     "addons.title": "Add-ons",
     "addons.note": "kisi bhi style ke saath",
@@ -71,138 +71,525 @@
     "footer.big": "REELESTATE"
   },
   "heroPhones": [
-    { "tag": "3D Walkthrough", "video": "assets/preview/rajpal-walkthrough.mp4", "poster": "assets/img/rajpal-walkthrough.jpg" },
-    { "tag": "Brand Ad", "video": "assets/preview/balaji-brand-ad.mp4", "poster": "assets/img/balaji-brand-ad.jpg" },
-    { "tag": "Map-Pin Reel", "video": "assets/preview/villa-township.mp4", "poster": "assets/img/villa-township.jpg" }
+    {
+      "tag": "3D Walkthrough",
+      "video": "assets/preview/rajpal-walkthrough.mp4",
+      "poster": "assets/img/rajpal-walkthrough.jpg"
+    },
+    {
+      "tag": "Raw → Edited",
+      "video": "assets/video/hero-showreel.mp4",
+      "poster": "assets/img/hero-showreel.jpg"
+    },
+    {
+      "tag": "Map-Pin Reel",
+      "video": "assets/preview/villa-township.mp4",
+      "poster": "assets/img/villa-township.jpg"
+    }
   ],
   "stats": [
-    { "value": 6, "suffix": "+", "label": "Real estate brands" },
-    { "value": 10, "suffix": "+", "label": "Reels delivered" },
-    { "value": 48, "suffix": " hr", "label": "Avg. delivery" },
-    { "value": 60, "suffix": " fps", "label": "Smooth export" }
+    {
+      "value": 6,
+      "suffix": "+",
+      "label": "Real estate brands"
+    },
+    {
+      "value": 10,
+      "suffix": "+",
+      "label": "Reels delivered"
+    },
+    {
+      "value": 48,
+      "suffix": " hr",
+      "label": "Avg. delivery"
+    },
+    {
+      "value": 60,
+      "suffix": " fps",
+      "label": "Smooth export"
+    }
   ],
   "brands": [
-    { "name": "Chokha Ghar", "sub": "Jaipur", "logo": "" },
-    { "name": "Shree Bala Ji Homes", "sub": "Builders", "logo": "" },
-    { "name": "21 Villa Township", "sub": "Kalwar Road", "logo": "" },
-    { "name": "Rajpal House", "sub": "Luxury Villa", "logo": "" },
-    { "name": "Kalyan Ji Bhugasra", "sub": "Personal Brand", "logo": "" },
-    { "name": "Pacific Mall Plots", "sub": "Mansarovar", "logo": "" }
+    {
+      "name": "Chokha Ghar",
+      "sub": "Jaipur",
+      "logo": ""
+    },
+    {
+      "name": "Shree Bala Ji Homes",
+      "sub": "Builders",
+      "logo": ""
+    },
+    {
+      "name": "21 Villa Township",
+      "sub": "Kalwar Road",
+      "logo": ""
+    },
+    {
+      "name": "Rajpal House",
+      "sub": "Luxury Villa",
+      "logo": ""
+    },
+    {
+      "name": "Kalyan Ji Bhugasra",
+      "sub": "Personal Brand",
+      "logo": ""
+    },
+    {
+      "name": "Pacific Mall Plots",
+      "sub": "Mansarovar",
+      "logo": ""
+    }
   ],
   "services": [
     {
-      "id": "walkthrough-3d", "name": "3D Walkthrough Labels", "price": 7999, "unit": "per reel", "delivery": "72 hr", "level": 5,
+      "id": "walkthrough-3d",
+      "name": "3D Walkthrough Labels",
+      "price": 7999,
+      "unit": "per reel",
+      "delivery": "72 hr",
+      "level": 5,
       "tag": "Premium · 3D Tracking",
       "desc": "‘BEDROOM 1’, ‘KITCHEN’ jaise 3D labels asli deewar aur floor par frame-by-frame track kiye hue. Sabse zyada kaam wala edit.",
-      "features": ["Wall & floor 3D tracking", "Parking area colour fill", "Person roto + 3D name behind", "Beat-synced 60 fps"],
-      "video": "assets/video/rajpal-walkthrough.mp4", "preview": "assets/preview/rajpal-walkthrough.mp4", "poster": "assets/img/rajpal-walkthrough.jpg"
+      "features": [
+        "Wall & floor 3D tracking",
+        "Parking area colour fill",
+        "Person roto + 3D name behind",
+        "Beat-synced 60 fps"
+      ],
+      "video": "assets/video/rajpal-walkthrough.mp4",
+      "preview": "assets/preview/rajpal-walkthrough.mp4",
+      "poster": "assets/img/rajpal-walkthrough.jpg"
     },
     {
-      "id": "brand-ad", "name": "Voice-Over Brand Ad", "price": 5999, "unit": "per reel", "delivery": "48–72 hr", "level": 4,
+      "id": "brand-ad",
+      "name": "Voice-Over Brand Ad",
+      "price": 5999,
+      "unit": "per reel",
+      "delivery": "48–72 hr",
+      "level": 4,
       "tag": "Most popular",
       "desc": "Har cut voice-over ke words par. Gold-navy kinetic typography jo camera ke saath track hoti hai.",
-      "features": ["VO-synced cuts & text", "Camera-tracked typography", "Logo reveal + call card", "Mechanical / UI SFX"],
-      "video": "assets/video/balaji-brand-ad.mp4", "preview": "assets/preview/balaji-brand-ad.mp4", "poster": "assets/img/balaji-brand-ad.jpg"
+      "features": [
+        "VO-synced cuts & text",
+        "Camera-tracked typography",
+        "Logo reveal + call card",
+        "Mechanical / UI SFX"
+      ],
+      "video": "assets/video/balaji-brand-ad.mp4",
+      "preview": "assets/preview/balaji-brand-ad.mp4",
+      "poster": "assets/img/balaji-brand-ad.jpg"
     },
     {
-      "id": "township", "name": "Location & Map-Pin Reel", "price": 4999, "unit": "per reel", "delivery": "48 hr", "level": 4,
+      "id": "township",
+      "name": "Location & Map-Pin Reel",
+      "price": 4999,
+      "unit": "per reel",
+      "delivery": "48 hr",
+      "level": 4,
       "tag": "Drone Tracking",
       "desc": "Drone shots par hospital, school, bus stand ke tracked pins — buyer ko location turant samajh aaye.",
-      "features": ["Tracked drone map pins", "Nearby landmarks tagged", "Clean blue graphics", "Price & size cards"],
-      "video": "assets/video/villa-township.mp4", "preview": "assets/preview/villa-township.mp4", "poster": "assets/img/villa-township.jpg"
+      "features": [
+        "Tracked drone map pins",
+        "Nearby landmarks tagged",
+        "Clean blue graphics",
+        "Price & size cards"
+      ],
+      "video": "assets/video/villa-township.mp4",
+      "preview": "assets/preview/villa-township.mp4",
+      "poster": "assets/img/villa-township.jpg"
     },
     {
-      "id": "brand-rise", "name": "Before → After Brand Rise", "price": 3999, "unit": "per reel", "delivery": "48 hr", "level": 3,
+      "id": "brand-rise",
+      "name": "Before → After Brand Rise",
+      "price": 3999,
+      "unit": "per reel",
+      "delivery": "48 hr",
+      "level": 3,
       "tag": "",
       "desc": "Khaali zameen se taiyaar project tak — dramatic reveal jo scroll rok de.",
-      "features": ["Site-to-project reveal", "Cinematic transitions", "Brand title animation", "Music sync"],
-      "video": "assets/video/villa-brandrise.mp4", "preview": "assets/preview/villa-brandrise.mp4", "poster": "assets/img/villa-brandrise.jpg"
+      "features": [
+        "Site-to-project reveal",
+        "Cinematic transitions",
+        "Brand title animation",
+        "Music sync"
+      ],
+      "video": "assets/video/villa-brandrise.mp4",
+      "preview": "assets/preview/villa-brandrise.mp4",
+      "poster": "assets/img/villa-brandrise.jpg"
     },
     {
-      "id": "promo", "name": "Property Promo Reel", "price": 2999, "unit": "per reel", "delivery": "24–48 hr", "level": 3,
+      "id": "promo",
+      "name": "Property Promo Reel",
+      "price": 2999,
+      "unit": "per reel",
+      "delivery": "24–48 hr",
+      "level": 3,
       "tag": "",
       "desc": "Beat par fast cuts, luxury titles aur golden grade — Instagram ke liye perfect.",
-      "features": ["Beat-synced cuts", "Luxury title cards", "Colour grading", "Ending screen + number"],
-      "video": "assets/video/chokhaghar-reel.mp4", "preview": "assets/preview/chokhaghar-reel.mp4", "poster": "assets/img/chokhaghar-reel.jpg"
+      "features": [
+        "Beat-synced cuts",
+        "Luxury title cards",
+        "Colour grading",
+        "Ending screen + number"
+      ],
+      "video": "assets/video/chokhaghar-reel.mp4",
+      "preview": "assets/preview/chokhaghar-reel.mp4",
+      "poster": "assets/img/chokhaghar-reel.jpg"
     },
     {
-      "id": "personal", "name": "Personal / Leader Brand Reel", "price": 2499, "unit": "per reel", "delivery": "24–48 hr", "level": 2,
+      "id": "personal",
+      "name": "Personal / Leader Brand Reel",
+      "price": 2499,
+      "unit": "per reel",
+      "delivery": "24–48 hr",
+      "level": 2,
       "tag": "",
       "desc": "Builder, agent ya neta ke liye event highlights aur naam ke titles ke saath.",
-      "features": ["Beat-synced highlights", "Name title graphics", "Stabilise + grade", "Story & Reel export"],
-      "video": "assets/video/sarpanch-reel.mp4", "preview": "assets/preview/sarpanch-reel.mp4", "poster": "assets/img/sarpanch-reel.jpg"
+      "features": [
+        "Beat-synced highlights",
+        "Name title graphics",
+        "Stabilise + grade",
+        "Story & Reel export"
+      ],
+      "video": "assets/video/sarpanch-reel.mp4",
+      "preview": "assets/preview/sarpanch-reel.mp4",
+      "poster": "assets/img/sarpanch-reel.jpg"
     },
     {
-      "id": "before-after", "name": "Before / After Compare Reel", "price": 1999, "unit": "per reel", "delivery": "24 hr", "level": 2,
+      "id": "before-after",
+      "name": "Before / After Compare Reel",
+      "price": 1999,
+      "unit": "per reel",
+      "delivery": "24 hr",
+      "level": 2,
       "tag": "",
       "desc": "Raw vs edited split-screen — builder apni quality dikha sake.",
-      "features": ["Split-screen wipe", "Colour grade compare", "Captions", "Reels / Shorts ready"],
-      "video": "assets/video/balaji-before-after.mp4", "preview": "assets/preview/balaji-before-after.mp4", "poster": "assets/img/balaji-before-after.jpg"
+      "features": [
+        "Split-screen wipe",
+        "Colour grade compare",
+        "Captions",
+        "Reels / Shorts ready"
+      ],
+      "video": "assets/video/balaji-before-after.mp4",
+      "preview": "assets/preview/balaji-before-after.mp4",
+      "poster": "assets/img/balaji-before-after.jpg"
     },
     {
-      "id": "plot", "name": "Plot Caption Reel", "price": 1499, "unit": "per reel", "delivery": "24 hr", "level": 1,
+      "id": "plot",
+      "name": "Plot Caption Reel",
+      "price": 1499,
+      "unit": "per reel",
+      "delivery": "24 hr",
+      "level": 1,
       "tag": "Budget",
       "desc": "Location, ‘Park Facing’ tag, bolne wale ke captions aur bada call-number card.",
-      "features": ["Auto captions (Hindi)", "Location + facing tags", "Call number card", "Clean colour fix"],
-      "video": "assets/video/plot-reel.mp4", "preview": "assets/preview/plot-reel.mp4", "poster": "assets/img/plot-reel.jpg"
+      "features": [
+        "Auto captions (Hindi)",
+        "Location + facing tags",
+        "Call number card",
+        "Clean colour fix"
+      ],
+      "video": "assets/video/plot-reel.mp4",
+      "preview": "assets/preview/plot-reel.mp4",
+      "poster": "assets/img/plot-reel.jpg"
     }
   ],
   "addons": [
-    { "name": "Drone road-track glowing lines", "price": 1999 },
-    { "name": "Extra 3D tracked label", "price": 499 },
-    { "name": "Script + AI voice-over", "price": 799 },
-    { "name": "Express delivery (12 hr)", "price": 999 },
-    { "name": "Extra revision round", "price": 299 },
-    { "name": "Meta / Instagram ad setup", "price": 2999 },
-    { "name": "Thumbnail / cover design", "price": 199 }
+    {
+      "name": "Drone road-track glowing lines",
+      "price": 1999
+    },
+    {
+      "name": "Extra 3D tracked label",
+      "price": 499
+    },
+    {
+      "name": "Script + AI voice-over",
+      "price": 799
+    },
+    {
+      "name": "Express delivery (12 hr)",
+      "price": 999
+    },
+    {
+      "name": "Extra revision round",
+      "price": 299
+    },
+    {
+      "name": "Meta / Instagram ad setup",
+      "price": 2999
+    },
+    {
+      "name": "Thumbnail / cover design",
+      "price": 199
+    }
   ],
   "packages": [
-    { "name": "Starter", "price": 9999, "per": "/ month", "reels": "4 reels", "featured": false,
-      "items": ["Level 1–3 styles", "2 revisions each", "48 hr delivery", "WhatsApp support"] },
-    { "name": "Growth", "price": 24999, "per": "/ month", "reels": "10 reels", "featured": true,
-      "items": ["Any style up to Level 4", "Priority 24 hr delivery", "Free thumbnails", "Content calendar idea"] },
-    { "name": "Builder Pro", "price": 44999, "per": "/ month", "reels": "20 reels", "featured": false,
-      "items": ["All styles incl. 3D walkthrough", "Dedicated editor", "Meta ad setup included", "Monthly report call"] }
+    {
+      "name": "Starter",
+      "price": 9999,
+      "per": "/ month",
+      "reels": "4 reels",
+      "featured": false,
+      "items": [
+        "Plot, promo, personal & compare reels",
+        "2 revisions each",
+        "48 hr delivery",
+        "WhatsApp support"
+      ]
+    },
+    {
+      "name": "Growth",
+      "price": 24999,
+      "per": "/ month",
+      "reels": "10 reels",
+      "featured": true,
+      "items": [
+        "All styles except 3D walkthrough",
+        "Priority 24 hr delivery",
+        "Free thumbnails",
+        "Content calendar idea"
+      ]
+    },
+    {
+      "name": "Builder Pro",
+      "price": 44999,
+      "per": "/ month",
+      "reels": "20 reels",
+      "featured": false,
+      "items": [
+        "All styles incl. 3D walkthrough",
+        "Dedicated editor",
+        "Meta ad setup included",
+        "Monthly report call"
+      ]
+    }
   ],
   "portfolio": [
-    { "title": "Rajpal House", "sub": "3D walkthrough labels", "cat": "Walkthrough", "style": "walkthrough-3d", "video": "assets/video/rajpal-walkthrough.mp4", "preview": "assets/preview/rajpal-walkthrough.mp4", "poster": "assets/img/rajpal-walkthrough.jpg" },
-    { "title": "Shree Bala Ji Homes", "sub": "Voice-over brand ad", "cat": "Brand Ads", "style": "brand-ad", "video": "assets/video/balaji-brand-ad.mp4", "preview": "assets/preview/balaji-brand-ad.mp4", "poster": "assets/img/balaji-brand-ad.jpg" },
-    { "title": "21 Villa Township", "sub": "Location & map-pin reel", "cat": "Township", "style": "township", "video": "assets/video/villa-township.mp4", "preview": "assets/preview/villa-township.mp4", "poster": "assets/img/villa-township.jpg" },
-    { "title": "Shree Bala Ji Homes", "sub": "Before / after compare", "cat": "Brand Ads", "style": "before-after", "video": "assets/video/balaji-before-after.mp4", "preview": "assets/preview/balaji-before-after.mp4", "poster": "assets/img/balaji-before-after.jpg" },
-    { "title": "21 Villa Township", "sub": "Before → after brand rise", "cat": "Township", "style": "brand-rise", "video": "assets/video/villa-brandrise.mp4", "preview": "assets/preview/villa-brandrise.mp4", "poster": "assets/img/villa-brandrise.jpg" },
-    { "title": "Pacific Mall, Mansarovar", "sub": "Park-facing plot reel", "cat": "Plots", "style": "plot", "video": "assets/video/plot-reel.mp4", "preview": "assets/preview/plot-reel.mp4", "poster": "assets/img/plot-reel.jpg" },
-    { "title": "Chokha Ghar", "sub": "Property promo reel", "cat": "Township", "style": "promo", "video": "assets/video/chokhaghar-reel.mp4", "preview": "assets/preview/chokhaghar-reel.mp4", "poster": "assets/img/chokhaghar-reel.jpg" },
-    { "title": "Kalyan Ji Bhugasra", "sub": "Personal brand reel", "cat": "Personal", "style": "personal", "video": "assets/video/sarpanch-reel.mp4", "preview": "assets/preview/sarpanch-reel.mp4", "poster": "assets/img/sarpanch-reel.jpg" }
+    {
+      "title": "Rajpal House",
+      "sub": "3D walkthrough labels",
+      "cat": "Walkthrough",
+      "style": "walkthrough-3d",
+      "video": "assets/video/rajpal-walkthrough.mp4",
+      "preview": "assets/preview/rajpal-walkthrough.mp4",
+      "poster": "assets/img/rajpal-walkthrough.jpg"
+    },
+    {
+      "title": "Shree Bala Ji Homes",
+      "sub": "Voice-over brand ad",
+      "cat": "Brand Ads",
+      "style": "brand-ad",
+      "video": "assets/video/balaji-brand-ad.mp4",
+      "preview": "assets/preview/balaji-brand-ad.mp4",
+      "poster": "assets/img/balaji-brand-ad.jpg"
+    },
+    {
+      "title": "21 Villa Township",
+      "sub": "Location & map-pin reel",
+      "cat": "Township",
+      "style": "township",
+      "video": "assets/video/villa-township.mp4",
+      "preview": "assets/preview/villa-township.mp4",
+      "poster": "assets/img/villa-township.jpg"
+    },
+    {
+      "title": "Shree Bala Ji Homes",
+      "sub": "Before / after compare",
+      "cat": "Brand Ads",
+      "style": "before-after",
+      "video": "assets/video/balaji-before-after.mp4",
+      "preview": "assets/preview/balaji-before-after.mp4",
+      "poster": "assets/img/balaji-before-after.jpg"
+    },
+    {
+      "title": "21 Villa Township",
+      "sub": "Before → after brand rise",
+      "cat": "Township",
+      "style": "brand-rise",
+      "video": "assets/video/villa-brandrise.mp4",
+      "preview": "assets/preview/villa-brandrise.mp4",
+      "poster": "assets/img/villa-brandrise.jpg"
+    },
+    {
+      "title": "Pacific Mall, Mansarovar",
+      "sub": "Park-facing plot reel",
+      "cat": "Plots",
+      "style": "plot",
+      "video": "assets/video/plot-reel.mp4",
+      "preview": "assets/preview/plot-reel.mp4",
+      "poster": "assets/img/plot-reel.jpg"
+    },
+    {
+      "title": "Chokha Ghar",
+      "sub": "Property promo reel",
+      "cat": "Township",
+      "style": "promo",
+      "video": "assets/video/chokhaghar-reel.mp4",
+      "preview": "assets/preview/chokhaghar-reel.mp4",
+      "poster": "assets/img/chokhaghar-reel.jpg"
+    },
+    {
+      "title": "Kalyan Ji Bhugasra",
+      "sub": "Personal brand reel",
+      "cat": "Personal",
+      "style": "personal",
+      "video": "assets/video/sarpanch-reel.mp4",
+      "preview": "assets/preview/sarpanch-reel.mp4",
+      "poster": "assets/img/sarpanch-reel.jpg"
+    }
   ],
   "beforeAfter": [
-    { "label": "Kitchen", "project": "Rajpal House", "before": "assets/ba/kitchen-before.mp4", "after": "assets/ba/kitchen-after.mp4", "beforePoster": "assets/ba/kitchen-before.jpg", "afterPoster": "assets/ba/kitchen-after.jpg", "changes": ["HDR → true colour", "3D ‘KITCHEN’ tracked on cabinets", "60 fps smooth"] },
-    { "label": "Villa front", "project": "Shree Bala Ji Homes", "before": "assets/ba/villa-before.mp4", "after": "assets/ba/villa-after.mp4", "beforePoster": "assets/ba/villa-before.jpg", "afterPoster": "assets/ba/villa-after.jpg", "changes": ["Sky & colour grade", "Kinetic ‘3 BHK’ title", "Brand logo stamp"] },
-    { "label": "Plot site", "project": "Pacific Mall Plots", "before": "assets/ba/plot-before.mp4", "after": "assets/ba/plot-after.mp4", "beforePoster": "assets/ba/plot-before.jpg", "afterPoster": "assets/ba/plot-after.jpg", "changes": ["Location header", "‘Park Facing’ tag", "Captions + call card"] },
-    { "label": "Bedroom", "project": "Rajpal House", "before": "assets/ba/bedroom-before.mp4", "after": "assets/ba/bedroom-after.mp4", "beforePoster": "assets/ba/bedroom-before.jpg", "afterPoster": "assets/ba/bedroom-after.jpg", "changes": ["Warm interior grade", "3D wall text tracking", "Anti-copy watermark"] },
-    { "label": "Event", "project": "Kalyan Ji Bhugasra", "before": "assets/ba/portrait-before.mp4", "after": "assets/ba/portrait-after.mp4", "beforePoster": "assets/ba/portrait-before.jpg", "afterPoster": "assets/ba/portrait-after.jpg", "changes": ["Reframed to 9:16", "Contrast + skin tone", "Name title graphic"] }
+    {
+      "label": "Kitchen",
+      "project": "Rajpal House",
+      "before": "assets/ba/kitchen-before.mp4",
+      "after": "assets/ba/kitchen-after.mp4",
+      "beforePoster": "assets/ba/kitchen-before.jpg",
+      "afterPoster": "assets/ba/kitchen-after.jpg",
+      "changes": [
+        "HDR → true colour",
+        "3D ‘KITCHEN’ tracked on cabinets",
+        "60 fps smooth"
+      ]
+    },
+    {
+      "label": "Villa front",
+      "project": "Shree Bala Ji Homes",
+      "before": "assets/ba/villa-before.mp4",
+      "after": "assets/ba/villa-after.mp4",
+      "beforePoster": "assets/ba/villa-before.jpg",
+      "afterPoster": "assets/ba/villa-after.jpg",
+      "changes": [
+        "Sky & colour grade",
+        "Kinetic ‘3 BHK’ title",
+        "Brand logo stamp"
+      ]
+    },
+    {
+      "label": "Plot site",
+      "project": "Pacific Mall Plots",
+      "before": "assets/ba/plot-before.mp4",
+      "after": "assets/ba/plot-after.mp4",
+      "beforePoster": "assets/ba/plot-before.jpg",
+      "afterPoster": "assets/ba/plot-after.jpg",
+      "changes": [
+        "Location header",
+        "‘Park Facing’ tag",
+        "Captions + call card"
+      ]
+    },
+    {
+      "label": "Bedroom",
+      "project": "Rajpal House",
+      "before": "assets/ba/bedroom-before.mp4",
+      "after": "assets/ba/bedroom-after.mp4",
+      "beforePoster": "assets/ba/bedroom-before.jpg",
+      "afterPoster": "assets/ba/bedroom-after.jpg",
+      "changes": [
+        "Warm interior grade",
+        "3D wall text tracking",
+        "Anti-copy watermark"
+      ]
+    },
+    {
+      "label": "Event",
+      "project": "Kalyan Ji Bhugasra",
+      "before": "assets/ba/portrait-before.mp4",
+      "after": "assets/ba/portrait-after.mp4",
+      "beforePoster": "assets/ba/portrait-before.jpg",
+      "afterPoster": "assets/ba/portrait-after.jpg",
+      "changes": [
+        "Reframed to 9:16",
+        "Contrast + skin tone",
+        "Name title graphic"
+      ]
+    }
   ],
   "process": [
-    { "title": "Choose a style", "text": "Website par edit style select karo — price pehle se pata hai." },
-    { "title": "Send footage", "text": "WhatsApp (document mode) ya Drive link se clips, logo, number, voice-over bhejo." },
-    { "title": "Watch preview", "text": "Low-quality watermark preview milega. 2 rounds tak free changes." },
-    { "title": "Get final HD", "text": "Balance payment ke baad 1080×1920, 60 fps final file — post karo aur leads lo." }
+    {
+      "title": "Choose a style",
+      "text": "Website par edit style select karo — price pehle se pata hai."
+    },
+    {
+      "title": "Send footage",
+      "text": "WhatsApp (document mode) ya Drive link se clips, logo, number, voice-over bhejo."
+    },
+    {
+      "title": "Watch preview",
+      "text": "Low-quality watermark preview milega. 2 rounds tak free changes."
+    },
+    {
+      "title": "Get final HD",
+      "text": "Balance payment ke baad 1080×1920, 60 fps final file — post karo aur leads lo."
+    }
   ],
   "whyCards": [
-    { "icon": "🏠", "title": "Real estate specialists", "text": "Villa, plot, township, walkthrough — sirf property content." },
-    { "icon": "🔒", "title": "Pay after preview", "text": "50% advance, baaki tab jab preview pasand aaye." },
-    { "icon": "⚡", "title": "Fast turnaround", "text": "Most reels 24–48 hr. Express 12 hr option." },
-    { "icon": "🛡️", "title": "Anti-copy watermark", "text": "Moving logo watermark — koi aapki video chura na sake." },
-    { "icon": "🎯", "title": "Ad-ready output", "text": "Meta / Instagram ads ke liye correct size, safe zones, CTA card." },
-    { "icon": "💬", "title": "Direct WhatsApp", "text": "Koi middleman nahi — seedha editor se baat." }
+    {
+      "icon": "🏠",
+      "title": "Real estate specialists",
+      "text": "Villa, plot, township, walkthrough — sirf property content."
+    },
+    {
+      "icon": "🔒",
+      "title": "Pay after preview",
+      "text": "50% advance, baaki tab jab preview pasand aaye."
+    },
+    {
+      "icon": "⚡",
+      "title": "Fast turnaround",
+      "text": "Most reels 24–48 hr. Express 12 hr option."
+    },
+    {
+      "icon": "🛡️",
+      "title": "Anti-copy watermark",
+      "text": "Moving logo watermark — koi aapki video chura na sake."
+    },
+    {
+      "icon": "🎯",
+      "title": "Ad-ready output",
+      "text": "Meta / Instagram ads ke liye correct size, safe zones, CTA card."
+    },
+    {
+      "icon": "💬",
+      "title": "Direct WhatsApp",
+      "text": "Koi middleman nahi — seedha editor se baat."
+    }
   ],
   "testimonials": [],
   "faqs": [
-    { "q": "Footage kaise bhejun?", "a": "WhatsApp par seedha bhej do (Document mode mein taaki quality na gire) ya Google Drive link share kar do. Voice-over, logo aur phone number bhi saath bhej dena." },
-    { "q": "Kitne din mein video milega?", "a": "Simple reels 24 ghante mein, brand ads 48–72 ghante, 3D walkthrough 72 ghante tak. Express 12-hour delivery add-on se bhi le sakte ho." },
-    { "q": "Rates alag-alag kyun hain?", "a": "Jitna zyada editing ka kaam, utna price. 3D tracking aur map pins mein har frame par kaam hota hai, isliye Level 4–5 styles mehenge hain. Simple caption reels sabse sasti." },
-    { "q": "Payment kab karni hai?", "a": "50% advance par kaam shuru hota hai. Pehle low-quality watermark preview milega, pasand aane par baaki 50% aur final HD file." },
-    { "q": "Kitne changes karwa sakte hain?", "a": "Har reel mein 2 revision rounds free hain. Uske baad ₹299 per round." },
-    { "q": "Shooting bhi karte ho?", "a": "Hum editing par focus karte hain. Jaipur mein shoot chahiye to WhatsApp par baat karo — partner videographer arrange ho sakta hai." },
-    { "q": "Video kis format mein milega?", "a": "1080×1920 vertical (Reels / Shorts / Ads), 60 fps, MP4. 16:9 YouTube version bhi add karwa sakte ho." }
-  ]
+    {
+      "q": "Footage kaise bhejun?",
+      "a": "WhatsApp par seedha bhej do (Document mode mein taaki quality na gire) ya Google Drive link share kar do. Voice-over, logo aur phone number bhi saath bhej dena."
+    },
+    {
+      "q": "Kitne din mein video milega?",
+      "a": "Simple reels 24 ghante mein, brand ads 48–72 ghante, 3D walkthrough 72 ghante tak. Express 12-hour delivery add-on se bhi le sakte ho."
+    },
+    {
+      "q": "Rates alag-alag kyun hain?",
+      "a": "Jitna zyada editing ka kaam, utna price. 3D tracking, map pins aur voice-over sync mein har frame par kaam hota hai, isliye wo styles mehenge hain. Simple caption reels sabse sasti."
+    },
+    {
+      "q": "Payment kab karni hai?",
+      "a": "50% advance par kaam shuru hota hai. Pehle low-quality watermark preview milega, pasand aane par baaki 50% aur final HD file."
+    },
+    {
+      "q": "Kitne changes karwa sakte hain?",
+      "a": "Har reel mein 2 revision rounds free hain. Uske baad ₹299 per round."
+    },
+    {
+      "q": "Shooting bhi karte ho?",
+      "a": "Hum editing par focus karte hain. Jaipur mein shoot chahiye to WhatsApp par baat karo — partner videographer arrange ho sakta hai."
+    },
+    {
+      "q": "Video kis format mein milega?",
+      "a": "1080×1920 vertical (Reels / Shorts / Ads), 60 fps, MP4. 16:9 YouTube version bhi add karwa sakte ho."
+    }
+  ],
+  "heroShowreel": {
+    "video": "assets/video/hero-showreel.mp4",
+    "poster": "assets/img/hero-showreel.jpg"
+  }
 }

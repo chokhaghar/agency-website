@@ -101,6 +101,16 @@
       <video muted loop playsinline preload="none" poster="${esc(media(p.poster))}" data-src="${esc(media(p.video))}"></video>
       ${p.tag ? `<span class="phone__tag">${esc(p.tag)}</span>` : ""}</div></div>`).join(""));
   $$("#heroPhones video").forEach(v => autoIO.observe(v));
+  // phones: full-screen raw→edited showreel behind the hero text (first impression = visuals)
+  const mobileHero = matchMedia("(max-width: 960px)");
+  const reel = D.heroShowreel || hp[1] || hp[0];
+  if (reel?.video) {
+    const rv = $("#heroReel video");
+    rv.poster = media(reel.poster);
+    const useReel = () => { if (mobileHero.matches && !rv.getAttribute("src")) { rv.preload = "auto"; rv.src = media(reel.video); } if (mobileHero.matches) playSafe(rv); else rv.pause(); };
+    useReel(); mobileHero.addEventListener?.("change", useReel);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden && mobileHero.matches) playSafe(rv); });
+  } else $("#heroReel").hidden = true;
 
   /* ---------- Brands marquee ---------- */
   const initials = n => String(n).split(/\s+/).filter(w => /[A-Za-z0-9]/.test(w[0] || "")).slice(0, 2).map(w => w[0]).join("").toUpperCase();
@@ -120,7 +130,6 @@
   /* ---------- Services ---------- */
   const services = D.services || [];
   const svcById = Object.fromEntries(services.map(s => [s.id, s]));
-  const levelBar = l => `<span class="lvl" title="Editing level ${l}/5"><span class="lvl__bars">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= l ? "on" : ""}"></i>`).join("")}</span>Editing level ${l}/5</span>`;
   $("#stylesGrid").innerHTML = services.map(s => `
     <article class="scard reveal" data-id="${esc(s.id)}">
       <div class="scard__media" data-lightbox="${esc(media(s.video))}" data-poster="${esc(media(s.poster))}" data-title="${esc(s.name)}" data-sub="Sample — ${esc(s.name)}" data-style="${esc(s.id)}">
@@ -132,7 +141,6 @@
       </div>
       <div class="scard__body">
         <h3>${esc(s.name)}</h3>
-        ${s.level ? levelBar(Math.max(1, Math.min(5, +s.level))) : ""}
         <p>${esc(s.desc)}</p>
         <ul class="scard__feat">${(s.features || []).map(f => `<li>${esc(f)}</li>`).join("")}</ul>
         <div class="scard__meta"><span>Delivery</span><b>${esc(s.delivery)}</b></div>

@@ -60,6 +60,7 @@
         <div class="blob blob--a"></div><div class="blob blob--b"></div><div class="blob blob--c"></div>
         <div class="hero__grid"></div>
       </div>
+      <div class="hero__reel" id="heroReel" aria-hidden="true"><video muted loop playsinline preload="none"></video></div>
       <div class="container hero__wrap">
         <div class="hero__copy">
           <p class="eyebrow reveal"><span class="pulse-dot"></span> <span data-k="hero.eyebrow">Now taking orders · Jaipur & all India</span></p>
@@ -276,7 +277,7 @@
   <!-- Order modal -->
   <div class="modal" id="orderModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="omTitle">
     <div class="modal__backdrop" data-close></div>
-    <div class="modal__panel">
+    <div class="modal__panel" data-lenis-prevent>
       <button class="modal__x" data-close aria-label="Close">×</button>
       <div class="om__head">
         <video class="om__vid" id="omVid" muted loop playsinline></video>
@@ -311,7 +312,7 @@
   <!-- Lightbox -->
   <div class="modal lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="modal__backdrop" data-close></div>
-    <div class="lightbox__panel">
+    <div class="lightbox__panel" data-lenis-prevent>
       <button class="modal__x" data-close aria-label="Close">×</button>
       <video id="lbVideo" controls playsinline></video>
       <div class="lightbox__meta">
