@@ -1,0 +1,9 @@
+# build scratch (not needed on the live site)
+_build/*.jpg
+_build/*.png
+_build/*.log
+_build/*.backup.json
+_build/og.html
+_build/icon.html
+*.tmp
+__pycache__/

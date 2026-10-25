@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin Panel — Website</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin/admin.css">
+</head>
+<body>
+  <header class="top">
+    <div class="top__brand"><img src="assets/img/logo-mark.svg" alt="" id="topLogo"><div><b>Admin Panel</b><small id="modeLabel">Connecting…</small></div></div>
+    <div class="top__actions">
+      <span class="dirty" id="dirty" hidden>● Unsaved changes</span>
+      <button class="b b--ghost" id="btnPreview" title="Changes ko live karne se pehle dekho">👁 Preview</button>
+      <button class="b b--gold" id="btnSave" disabled>💾 Save &amp; Publish</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="side" id="side"></nav>
+    <main class="main" id="main">
+      <div class="empty">Loading…</div>
+    </main>
+  </div>
+
+  <!-- media library -->
+  <div class="dlg" id="libDlg" hidden>
+    <div class="dlg__panel">
+      <div class="dlg__head"><b>Media library</b><input id="libSearch" placeholder="Search…"><button class="b b--ghost b--sm" data-close>✕</button></div>
+      <div class="lib" id="libGrid"></div>
+    </div>
+  </div>
+
+  <!-- progress -->
+  <div class="dlg" id="progDlg" hidden>
+    <div class="dlg__panel dlg__panel--sm">
+      <b id="progTitle">Saving…</b>
+      <div class="prog"><span id="progBar"></span></div>
+      <p id="progText"></p>
+      <button class="b b--gold" id="progOk" hidden>OK</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="admin/admin.js"></script>
+</body>
+</html>
