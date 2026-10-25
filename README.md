@@ -8,6 +8,7 @@ Admin panel mein ye sab badal sakte ho:
 | Section | Kya badlega |
 |---|---|
 | ⚙️ General | Naam, logo, **WhatsApp number**, phone, email, Instagram |
+| 🎁 Offers & Coupons | Festive popup (naam se apne aap theme), coupon codes, ON/OFF, last date |
 | 💰 Edit Styles & Rates | Har style ka rate, level (1–5), delivery, features, sample video |
 | ➕ Add-ons / 📦 Packages | Extra services aur monthly plans ke rates |
 | 🎬 Portfolio | Naya kaam add karo (video upload → poster apne aap banta hai) |
@@ -38,3 +39,9 @@ Bade video (50–200 MB) website slow kar dete hain. Pehle video ko `tools\Video
 - `index.html`, `css/`, `js/` — website ka design
 - `admin.html`, `admin/` — admin panel
 - `tools/server.py` — local server · `_build/make_media.py` — purane reels se media banane wala script
+
+## Offers & coupons
+- Admin → 🎁 Offers & Coupons → “+ Naya add karo”: naam (jaise *Navratri Offer*), code, % ya ₹ discount, last date.
+- **Offer ON** hatao ya last date nikal jaye → code website par kaam nahi karega.
+- **Popup dikhao** tick → us offer ka popup aayega (list ka pehla ON popup). Popup wala code popup mein sabko dikhta hai.
+- Baaki codes **secret** hain: website ki file mein sirf unka hash (fingerprint) save hota hai, asli code kisi ko nahi dikhta. Admin mein bhi sirf hint dikhta hai (jaise SE••••50) — code yaad rakhna ya kahin note kar lena.
